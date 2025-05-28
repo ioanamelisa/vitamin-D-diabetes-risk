@@ -1,0 +1,26 @@
+Title: Vitamin D Supplementation and Risk of Type 2 Diabetes – Statistical Reproduction  
+Student: Luca Ioana Melisa  
+Platform Used: R Studio  
+
+Problem Solving Mode:  
+This mini-project reproduces the key statistical approach used in the study by Pittas et al. (2023), which examined whether Vitamin D supplementation reduces the risk of developing type 2 diabetes in people with prediabetes. Since real patient data was not available, I simulated a dataset in R based on the reported incidence rates (9.1% in the Vitamin D group vs. 10.7% in the placebo group).
+
+I generated two groups of 1000 simulated individuals using the `rbinom()` function, assigning diabetes outcomes probabilistically based on these rates. I used `set.seed(2025)` to ensure reproducibility. I then combined the data into a structured data frame for analysis.
+
+Justification and Explanation:  
+To analyze the data, I first created a 2x2 contingency table and applied a Pearson chi-square test (`chisq.test()`) to check for significant differences in diabetes rates between groups. The resulting p-value was 0.304, indicating no significant difference.
+
+Next, I calculated the relative risk (RR) and 95% confidence interval using the `epi.2by2()` function from the `epiR` package. This gave an RR of 0.86, suggesting a possible 14% reduction in diabetes risk, but the confidence interval (0.67 to 1.12) included 1, meaning the result was not statistically significant.
+
+To support the findings, I also ran a logistic regression model using the `glm()` function, with diabetes status as the dependent variable and group as the predictor. The odds ratio was 0.85, again not statistically significant (p = 0.271), but consistent with the trend suggested by the original study.
+
+Significant Test Data and Commented Results:  
+- Sample size: 1000 individuals per group  
+- Vitamin D group incidence: 96 cases (9.6%)  
+- Placebo group incidence: 111 cases (11.1%)  
+- Chi-square test p-value: 0.304  
+- Relative Risk: 0.86 (95% CI: 0.67–1.12)  
+- Odds Ratio (from logistic regression): 0.85 (p = 0.271)  
+
+For visualization, I created a bar plot of diabetes cases by group using `barplot()` and added percentage labels. 
+
