@@ -28,7 +28,7 @@ chisq_result <- chisq.test(table_data)
 print("Chi-square Test Result:")
 print(chisq_result)
 
-# Relative Risk and 95% Confidence Interval using epi.2by2
+# Relative Risk and 95% Confidence Interval
 epi_table <- matrix(c(sum(vit_d), n - sum(vit_d),
                       sum(placebo), n - sum(placebo)),
                     nrow = 2, byrow = TRUE)
@@ -45,7 +45,6 @@ data$Diabetes <- as.factor(data$Diabetes)
 log_model <- glm(Diabetes ~ Group, data = data, family = binomial)
 summary(log_model)
 
-# Get predicted probabilities for each group
 pred_probs <- aggregate(as.numeric(as.character(data$Diabetes)), 
                         by = list(data$Group), 
                         FUN = mean)
@@ -53,7 +52,8 @@ names(pred_probs) <- c("Group", "DiabetesRate")
 print(pred_probs)
 
 counts <- table(data$Group, data$Diabetes)[, "1"]
-barplot_heights <- as.numeric(counts)
+barplot_heights <- c("Vitamin D" = counts["Vitamin D"],
+                     "Placebo" = counts["Placebo"])
 
 bp <- barplot(barplot_heights,
               beside = TRUE,
@@ -66,6 +66,7 @@ bp <- barplot(barplot_heights,
 percent_labels <- paste0(round((barplot_heights / n) * 100, 1), "%")
 text(x = bp, y = barplot_heights + 5, labels = percent_labels, col = "blue")
 
+# Save plot to EPS file
 postscript("incidence_eps_figure.eps", horizontal=FALSE, onefile=FALSE,
            paper="special", width=6, height=4)
 bp <- barplot(barplot_heights,
